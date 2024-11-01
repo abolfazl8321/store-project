@@ -1,6 +1,4 @@
 const Data=require('../models/user');
-const express=require('express');
-const router=express.Router();
 const Controllers=require('./Controllers');
 const DBController=require('../models/DBcontroller');
 const {validationResult}=require('express-validator');
@@ -38,7 +36,7 @@ class ProductsControllers extends Controllers{
             const errors=validationResult(req)
             if(!errors.isEmpty()){
                 const myErrors=errors.array().map(err=>err.msg);
-                req.flash("errors",myErrors);
+                req.flash('errors',myErrors);
                 return res.redirect('/');
             }
             const newProduct=async(product,price)=>{
@@ -50,6 +48,31 @@ class ProductsControllers extends Controllers{
             return res.redirect('/product/all');
             }
         catch (error) {
+            next(error);
+        }
+    }
+    async updateProduct(req,res,next){
+        try {
+            await DBController.getProduct(parseInt(req.body.id)).then(product=>{
+                if(!product) return this.error("This id is not defind",404);
+            })
+            const id=parseInt(req.body.id)
+            await DBController.updateProduct(id,req.body.product,req.body.price);
+            req.flash('message','This info is Updated');
+            return res.redirect('/product/all');
+        } catch (error) {
+            next(error);
+        }
+    }
+    async deleteProduct(req,res,next){
+        try {
+            await DBController.getProduct(parseInt(req.body.id)).then(product=>{
+                if(!product) return this.error("This id is not defind",404);
+            })
+            await DBController.deleteProduct(parseInt(req.body.id));
+            req.flash('message','This info is Deleted');
+            return res.redirect('/product/all');
+        } catch (error) {
             next(error);
         }
     }

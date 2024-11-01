@@ -17,6 +17,13 @@
             <% }) %>
         </ul>
     </div>
+<div>
+    <form action="/product/<%= product.order_id %>?method=PUT" method="post">
+        <input type="text" placeholder="product" name="product" value="<%= product.product %>">
+        <input type="decimal" placeholder="price" name="price" value="<%= product.price %>">
+        <input type="submit" value="update" >
+    </form>
+</div>
 <%}%>
 </body>
 </html>

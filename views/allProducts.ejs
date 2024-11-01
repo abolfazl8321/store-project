@@ -6,6 +6,9 @@
     <title><%= title %></title>
 </head>
 <body>
+    <% if(products.length){ %>
+        <h1 style="color: blueviolet;">Hello,Welcome To Store</h1>
+        <% } %>
     <% if(message){ %>
         <h4><%= message %></h4>
         <% } %>
@@ -19,17 +22,22 @@
     <% if(!products.length){ %>
         <h2 style="color: red;"> <%= "There Are No Products In This Store" %> </h2>
     <%}%>
-    <% if(products.length){ %>
-    <h1 style="color: blueviolet;">Hello,Welcome To Store</h1>
-    <% } %>
-    <div>
-        <ul>
-            <% products.forEach(product => {%>
-            <li>
-                Prouduct is :<%= product.product %> ==> Price is :<%= product.price %>($)
-            </li>
-            <% }) %>
-        </ul>
-    </div>
+    <table>
+    <tbody>
+        <% products.forEach(product=>{ %>
+        <tr>
+          <td>Product :<%=  product.product %></td>
+          <td>Price :<%= product.price %></td>
+          <td>
+            <br>
+            <form action="/product/<%= product.order_id %>?method=DELETE" method="post">
+              <input type="submit" value="remove" />
+            </form>
+            <a href="/product/<%= product.order_id %>">update</a>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+</table>
 </body>
 </html>

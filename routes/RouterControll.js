@@ -3,9 +3,12 @@ const express=require('express');
 const router=express.Router();
 const productRouter=require('./products');
 const config = require('../config');
+const authRouter=require('./auth')
 
 //this rout for handle wrong routs
+router.use('/auth',authRouter);
 router.use('/product',productRouter);
+
 router.all('*',(req,res,next)=>{
     try {
         const err=new Error(`This Request Is Not Defind`);

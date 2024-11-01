@@ -11,10 +11,6 @@ class DBController{
         const [product]=await Data.query(`select product,price from orders where order_id=?`,[id]);
         return product;
     }
-    static async getProductByProduct(product) {
-        const [result]=await Data.query(`select * from orders where product=?`,[product]);
-        return result[0];
-    }
     static async updateProduct(id,product,price){
         const [result]=await Data.query(`update orders set product=?,price=? where order_id=?`,[product,price,id]);
         return this.getProduct(id);
