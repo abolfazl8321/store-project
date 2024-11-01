@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <% if(message){ %>
+        <h4><%= message %></h4>
+        <% } %>
+            </div>
+            <form action="/product/new" method="post">
+                <input type="text" placeholder="product" name="product">
+                <input type="decimal" placeholder="price" name="price"><label for="price">currency unit($)</label>
+                <input type="submit">
+            </form>
+        </div>
+    <% if(!products.length){ %>
+        <h2 style="color: red;"> <%= "There Are No Products In This Store" %> </h2>
+    <%}%>
+    <% if(products.length){ %>
+    <h1 style="color: blueviolet;">Hello,Welcome To Store</h1>
+    <% } %>
+    <div>
+        <ul>
+            <% products.forEach(product => {%>
+            <li>
+                Prouduct is :<%= product.product %> ==> Price is :<%= product.price %>($)
+            </li>
+            <% }) %>
+        </ul>
+    </div>
+</body>
+</html>
