@@ -2,8 +2,8 @@ const express=require('express');
 const router=express.Router();
 const ProductsControllers=require('../Controllers/productsController');
 const ProductValidation = require('../Validation/ProductValidation');
+const auth=require('../middelwares/authorization');
 
-//These routers are for control RestfulApi
 
 router.get('/all',ProductsControllers.getProducts.bind(ProductsControllers));
 router.get('/:id',ProductsControllers.getProduct.bind(ProductsControllers));

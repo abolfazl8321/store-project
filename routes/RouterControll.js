@@ -3,11 +3,21 @@ const express=require('express');
 const router=express.Router();
 const productRouter=require('./products');
 const config = require('../config');
-const authRouter=require('./auth')
+const authRouter=require('./auth');
+const dashboardRouter=require('./dashboard');
 
 //this rout for handle wrong routs
 router.use('/auth',authRouter);
 router.use('/product',productRouter);
+router.use('/dashboard',dashboardRouter);
+router.get("/logout", (req, res) => {
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Error during logout." });
+      }
+      res.redirect('/')
+    });
+  });
 
 router.all('*',(req,res,next)=>{
     try {

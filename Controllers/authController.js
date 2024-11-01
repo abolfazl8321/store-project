@@ -5,7 +5,8 @@ const AuthControll = require('../models/authControll');
 const _=require('lodash');
 const bcrypt=require('bcrypt');
 const flash=require('connect-flash');
-
+const jwt=require('jsonwebtoken');
+require('dotenv').config();
 class AuthController extends Controllers{
     async registerForm(req,res,next){
         try {
@@ -31,8 +32,7 @@ class AuthController extends Controllers{
             }
             const validateResult=Joi.object(schema).validate(req.body);
             if(validateResult.error){
-                const err=validateResult.error.details[0].message
-                return res.render('auth/register',{err});
+                 return req.flash('errors',validateResult.error.details[0].message);
             }
             const user=await AuthControll.getUserByEmail(req.body.email);
             if(user){
@@ -42,8 +42,10 @@ class AuthController extends Controllers{
             const result=await AuthControll.insertUser(req.body.username,req.body.email,hashPass,req.body.birthdate);
             const newUser=await AuthControll.getUserByEmail(req.body.email);
             req.flash('message','register is success');
-            res.redirect('/');
-            return _.pick(newUser,["username","email","birthdate"]);
+            res.redirect('/dashboard');
+            const token=jwt.sign({id:user.order_id},process.env.SECRET_KEY)
+            return token,_.pick(newUser,["username","email","birthdate"]);
+
         } catch (error) {
             next(error)
         }
@@ -67,8 +69,10 @@ class AuthController extends Controllers{
                 req.flash('errors','password or email is invalid');
                 return res.redirect('/');
             }
+            const token=jwt.sign({id:user.order_id},process.env.SECRET_KEY)
             req.flash('message','Welcome,Login is compeleted');
-            return res.redirect('/')
+            res.redirect('/dashboard');
+            return token;
         } catch (error) {
             next(error)
         }
